@@ -1,0 +1,173 @@
+Swift包管理 
+
+注意 暂时 不支持 IOS  MACOS  TVOS
+
+
+这些 苹果专属平台 有自己的包管理 cocopod
+
+
+Swift包管理 则是用于跨平台
+
+自己的平台 工具 检查
+
+macserver:Dealer admindyn$ swift package --version
+Apple Swift Package Manager - Swift 4.0.0-dev (swiftpm-13752)
+macserver:Dealer admindyn$ 
+
+
+macserver:Dealer admindyn$ xcrun --find swift
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift
+macserver:Dealer admindyn$ 
+
+
+macserver:Dealer admindyn$ swift --version
+Apple Swift version 4.0.3 (swiftlang-900.0.74.1 clang-900.0.39.2)
+Target: x86_64-apple-macosx10.9
+macserver:Dealer admindyn$ 
+
+
+使用 Perfect  Swift 开源平台的  包管理 git  fetch  一直pending
+
+
+
+检查  git  配置
+	
+	macserver:etc admindyn$ git --version
+	git version 2.14.3 (Apple Git-98)
+	macserver:etc admindyn$ 
+
+	macserver:~ admindyn$ git config --list
+	credential.helper=osxkeychain
+	user.name=15110671453
+	user.email=15110671453@163.com
+	macserver:~ admindyn$
+
+
+第一  检查 发现 原来 我们的登陆计算机账号 没有权限
+
+使用 sudo  执行 我们Perfect 的 sudo swift package generate-xcodeproj
+
+
+第二  我们 需要修改 git下来的 所有的文件的chmod 777
+
+sudo git clone https://github.com/PerfectlySoft/PerfectTemplate.git
+
+macserver:SwiftOpen admindyn$ sudo chmod 777 ./*
+macserver:SwiftOpen admindyn$ cd PerfectTemplate/
+macserver:PerfectTemplate admindyn$ sudo chmod 777 ./*
+macserver:PerfectTemplate admindyn$ sudo chmod 777 ./Sources/*
+macserver:PerfectTemplate admindyn$ 
+
+
+我们 开发 mogondb
+
+
+	to install homebrew
+
+	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+	To install mongo-c:
+
+	brew install mongo-c-driver
+
+	git clone https://github.com/PerfectlySoft/PerfectTemplate.git
+	cd PerfectTemplate
+
+
+
+我们 直接 git perfectTemplate  总 在终端 fetching  pending
+
+
+
+
+改为自己建立package
+
+	getting started from scratch
+
+	cd /Users/admindyn/Desktop/WorkSpaceMainStudy20171017sublime-android/SwiftOpen
+	mkdir MyAwesomeProject
+
+	cd MyAwesomeProject
+
+
+	在 目录下 建立 文件 Package.swift 
+
+	import PackageDescription
+ 
+	let package = Package(
+    name: "MyAwesomeProject",
+    dependencies: [
+        .Package(
+        url: "https://github.com/PerfectlySoft/Perfect-HTTPServer.git",
+        majorVersion: 2
+        )
+    ]
+	)
+
+	以上主要添加 引用的库
+
+
+	然后 手动建立 Sources 文件夹 并在文件夹下 建立 main.swift 文件
+
+	在 Sources 文件夹 进行我们的编码 工作
+
+	我们在main.swift中 输入print("Well hi there!")
+
+	然后 执行 swift build  进行测试构建
+
+注意 我们 为了 在工程目录 能看到 每次构建 build 的 输出文件 修改build目录 $(PROJECT_DIR)/.build 修改BuildProductsPath
+
+
+
+记录 之前 
+macserver:PerfectTemplate admindyn$ swift package generate-xcodeproj
+generated: ./PerfectTemplate.xcodeproj
+
+失败  我们更新 mac commandline 后 成功
+
+环境记录 
+
+
+	macos 10.12.6
+
+	macserver:PerfectTemplate admindyn$ swift package --version
+	Apple Swift Package Manager - Swift 4.0.0-dev (swiftpm-13752)
+	macserver:PerfectTemplate admindyn$ 
+
+	macserver:PerfectTemplate admindyn$ swift --version
+	Apple Swift version 4.0.3 (swiftlang-900.0.74.1 clang-900.0.39.2)
+	Target: x86_64-apple-macosx10.9
+	macserver:PerfectTemplate admindyn$ 
+
+	macserver:PerfectTemplate admindyn$ xcodebuild -version
+	Xcode 9.2
+	Build version 9C40b
+	macserver:PerfectTemplate 
+	admindyn$
+
+
+因为 没有 记录 更新前的xcodebuild  
+
+	 无法对比前后具体环境  但是我们的确是更新 commandline 对 xcode9.2 的新命令行工具行后 正常了
+
+	macserver:PerfectTemplate admindyn$ swift package generate-xcodeproj
+	generated: ./PerfectTemplate.xcodeproj
+
+	运行后 生成 xcode 工程 并且 不再 fetching pedding
+
+
+
+
+	打开工程  直接 run 后 
+
+	需要注意 直接run  发现 生成了 产品 product 但是 并没有运行产品
+
+	需要 Edit Scheme 去设置 
+
+	然后访问http://localhost:8181/  这样我们可以在xcode终端调试区 看到 log 信息   我们就可以调试了  
+
+访问 我们写的服务器
+
+	http://localhost:8181/ 
+
+
