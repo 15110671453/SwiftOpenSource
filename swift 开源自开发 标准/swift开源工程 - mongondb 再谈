@@ -1,0 +1,96 @@
+swift开源工程 - mongondb 再谈
+
+第一 创建 空工程 并创建 swift package.swift 依赖包管理描述文件
+
+macserver:~ admindyn$ cd /Users/admindyn/Desktop/WorkSpaceMainStudy20171017sublime-android/swiftp 
+macserver:swiftp admindyn$ swift package init
+Creating library package: swiftp
+Creating Package.swift
+Creating README.md
+Creating .gitignore
+Creating Sources/
+Creating Sources/swiftp/swiftp.swift
+Creating Tests/
+Creating Tests/LinuxMain.swift
+Creating Tests/swiftpTests/
+Creating Tests/swiftpTests/swiftpTests.swift
+
+第二  使用 swift build  自动 下载 构建源码 包 载入我们需要一些源码包的支持
+
+macserver:swiftp admindyn$ swift build
+
+在 build 时  需要 注意 一件事 我们的package.swift描述文件 
+
+是生成 library 三方库  还是 生成可执行文件 
+
+我们会发现 如果生成三方库 这里 默认生成的 文件应该是 swiftp.swift
+
+如果生成可执行文件 则默认生成的文件 应该至少有一个main.swift文件
+
+否则 不对应  直接 build 会报错
+
+
+第三  build 阶段 可能会长时间 fetching  
+macserver:swiftp admindyn$ swift build
+Updating https://github.com/PerfectlySoft/Perfect.git
+Updating https://github.com/PerfectlySoft/Perfect-MongoDB.git
+Fetching https://github.com/PerfectlySoft/Perfect-mongo-c.git
+Cloning https://github.com/PerfectlySoft/Perfect.git
+Resolving https://github.com/PerfectlySoft/Perfect.git at 0.68.0
+Cloning https://github.com/PerfectlySoft/Perfect-mongo-c.git
+Resolving https://github.com/PerfectlySoft/Perfect-mongo-c.git at 3.0.0
+Cloning https://github.com/PerfectlySoft/Perfect-MongoDB.git
+Resolving https://github.com/PerfectlySoft/Perfect-MongoDB.git at 0.7.0
+Compile Swift Module 'swiftp' (1 sources)
+macserver:swiftp admindyn$ 
+
+两种不同情况 build 的 结果 以上时library
+
+以下是 executable 模式
+macserver:swiftp admindyn$ swift build
+Compile Swift Module 'swiftp' (1 sources)
+Linking ./.build/x86_64-apple-macosx10.10/debug/swiftp
+macserver:swiftp admindyn$ 
+
+
+
+第四 等这一阶段 完成 其实我们就可以 开始 源码 开发 我们的工程业务需求了
+
+
+第五 我们习惯 xcode 工程 开发 swift package generate-xcodeproj
+
+
+
+
+
+注意 在这个 网站  source compatibility 下 可以找到 需要的一些 官方的开源代码
+
+https://swift.org/source-compatibility/#current-list-of-projects
+
+还要注意 在跨平台开发时  mac的内核支撑框架库 与 linux 内核支撑框架库的 函数不一样 兼容问题
+
+以下 是一个实例  linux 与  mac 系统中 底层的 随机数生成的函数不一致 进行兼容
+
+#if os(Linux)
+import Glibc
+#else
+import Darwin.C
+#endif
+
+public extension MutableCollectionType where Index == Int {
+    mutating func shuffleInPlace() {
+        if count <= 1 { return }
+
+        for i in 0..<count - 1 {
+          #if os(Linux)
+            let j = Int(random() % (count - i)))) + i
+          #else
+            let j = Int(arc4random_uniform(UInt32(count - i))) + i
+          #endif
+            if i == j { continue }
+            swap(&self[i], &self[j])
+        }
+    }
+}
+
+
