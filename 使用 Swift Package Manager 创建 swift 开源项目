@@ -1,0 +1,46 @@
+使用 Swift Package Manager 创建 swift 开源项目
+
+第一步创建项目文件夹
+$ mkdir mytool && cd mytool
+第二 为项目创建依赖包管理 文件描述文件
+$ swift package init
+以上命令 自动帮我们建立Package.swift 文件 我们只需要针对修改即可
+
+第三 根据 Package.swift 文件的描述 生成 源码包
+$ swift build
+
+第四 测试
+$ swift test
+
+
+
+重新 使用 Perfect 开源的Mogodb的 swift 源码包 测试 swift 开发 mogodb
+
+先git 下载到源码
+
+然后 切换到源码目录  使用 swift
+
+第一 检查 swift package 版本3-4的版本 跨度很大
+
+macserver:Perfect-MongoDB-master-2 admindyn$ swift package --version
+Apple Swift Package Manager - Swift 4.0.0-dev (swiftpm-13752)
+
+第二 使用 swift build
+
+swift 根据 package.swift 文件的描述 构建 源码包
+
+
+第三 上面的过程 根据网络情况 git 在抓取 描述文件中的资源过程 有时 会长时间 fetching 阶段
+
+第四 上面 长时间 fetching 结束后 会多出这个文件 Package.resolved
+
+
+第五 我们习惯 在xcode 下开发  使用以下命令
+帮助我们 生成swift xcode工程描述启动文件
+PerfectMongoDB.xcodeproj
+
+macserver:Perfect-MongoDB-master-2 admindyn$ swift package generate-xcodeproj
+generated: ./PerfectMongoDB.xcodeproj
+
+第六 以上生成完毕 我们 点击 在xcode打开即可
+macserver:Perfect-MongoDB-master-2 admindyn$ 
