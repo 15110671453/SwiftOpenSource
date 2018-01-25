@@ -94,3 +94,12 @@ public extension MutableCollectionType where Index == Int {
 }
 
 
+build clean 的方式
+
+
+swift build --clean
+swift build --clean=dist
+
+It can be useful to wipe out all intermediate data and do a fresh build. Providing the --clean argument will delete the .build directory, and permit a fresh build. Providing the --clean=dist argument will delete both the .build directory and the Packages directory. Doing so will re-download all project dependencies during the next build to ensure you have the latest version of a dependent project.
+
+

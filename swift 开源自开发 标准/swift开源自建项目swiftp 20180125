@@ -1,0 +1,19 @@
+swift开源自建项目
+
+遇到 发现 
+import PerfectCBSON
+import PerfectCMongo
+
+在编码时  发现 没有引用成功
+
+我们开发时临时添加 发现很多api 访问不到
+
+测试发现  我们 开发 编码时
+
+我们 需要注意 避免 很多api 开发时 访问不到
+
+我们需要 编写代码 import 库 之后
+
+再用
+swift build 生成一次 库依赖源码包 生成
+swift package generate-xcodeproj 生成一次xcode 工程描述文件
