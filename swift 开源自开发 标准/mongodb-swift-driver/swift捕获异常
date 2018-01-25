@@ -1,0 +1,23 @@
+swift捕获异常
+
+当函数遇到错误条件时，会引发错误并抛出异常。 那个函数的调用者可以捕获错误并作出适当的响应
+
+func canThrowAnError() throws {
+     //这个函数可能会抛出一个错误
+}
+
+
+Swift会自动将错误传送到当前区间之外，直到被catch语句处理。
+
+do {
+    try canThrowAnError()
+    // no error was thrown
+} catch {
+    // an error was thrown
+}
+
+let age = -3
+assert(age >= 0, "A person's age can't be less than zero.")
+// This assertion fails because -3 is not >= 0.
+在这个例子中，如果age> = 0的值为true，那么代码继续执行，即age为正值。 如果age为负值，如上面的代码所示，age> = 0为false，断言失败，终止应用程序。
+
