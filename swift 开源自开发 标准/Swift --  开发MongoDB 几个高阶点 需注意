@@ -1,0 +1,181 @@
+Swift --  开发MongoDB 几个高阶点 需注意
+
+首先明确一点
+
+A record in MongoDB is a document
+
+一条记录 在MongoDB 查询后 表现形式为JSON 
+
+
+我们查询每一条记录 对应每一个字段都有对应的BSON Type 
+
+对应我们这里的MongoDb的操作符   $type 
+
+
+我们对应的数据MongoDB做了几本的分类
+
+db.inventory.insert(
+   {
+     item: "ABC1",
+     details: {
+        model: "14Q3",
+        manufacturer: "XYZ Company"
+     },
+     stock: [ { size: "S", qty: 25 }, { size: "M", qty: 50 } ],
+     category: "clothing"
+   }
+)
+JSON 表现形式的字典 结构 作为Document 插入
+
+JSON 表现形式的最外部 以数组结构 作为 Array 插入
+
+以上两种 MongoDB 的返回形式 两种数据结构对应
+
+第一 
+
+
+
+The operation returns a WriteResult object with the status of the operation. A successful insert of the document returns the following object:
+
+WriteResult({ "nInserted" : 1 })
+
+The nInserted field specifies the number of documents inserted. If the operation encounters an error, the WriteResult object will contain the error information.
+
+
+
+第二 
+
+Define a variable mydocuments that holds an array of documents to insert.
+
+var mydocuments =
+    [
+      {
+        item: "ABC2",
+        details: { model: "14Q3", manufacturer: "M1 Corporation" },
+        stock: [ { size: "M", qty: 50 } ],
+        category: "clothing"
+      },
+      {
+        item: "MNO2",
+        details: { model: "14Q3", manufacturer: "ABC Company" },
+        stock: [ { size: "S", qty: 5 }, { size: "M", qty: 5 }, { size: "L", qty: 1 } ],
+        category: "clothing"
+      },
+      {
+        item: "IJK2",
+        details: { model: "14Q2", manufacturer: "M5 Corporation" },
+        stock: [ { size: "S", qty: 5 }, { size: "L", qty: 1 } ],
+        category: "houseware"
+      }
+    ];
+
+
+Pass the mydocuments array to the db.collection.insert() to perform a bulk insert.
+
+db.inventory.insert( mydocuments );
+
+
+BulkWriteResult({
+   "writeErrors" : [ ],
+   "writeConcernErrors" : [ ],
+   "nInserted" : 3,
+   "nUpserted" : 0,
+   "nMatched" : 0,
+   "nModified" : 0,
+   "nRemoved" : 0,
+   "upserted" : [ ]
+})
+
+The nInserted field specifies the number of documents inserted. If the operation encounters an error, the BulkWriteResult object will contain information regarding the error.
+
+
+注意 MongoDB 感觉一个类似事务的操作
+
+Bulk 插入数据
+
+The operation returns an unordered operations builder which maintains a list of operations to perform. Unordered operations means that MongoDB can execute in parallel as well as in nondeterministic order. If an error occurs during the processing of one of the write operations, MongoDB will continue to process remaining write operations in the list.
+
+You can also initialize an ordered operations builder; see db.collection.initializeOrderedBulkOp() for details.
+
+
+
+var bulk = db.inventory.initializeOrderedBulkOp();
+
+bulk.insert(
+   {
+     item: "BE10",
+     details: { model: "14Q2", manufacturer: "XYZ Company" },
+     stock: [ { size: "L", qty: 5 } ],
+     category: "clothing"
+   }
+);
+bulk.insert(
+   {
+     item: "ZYT1",
+     details: { model: "14Q1", manufacturer: "ABC Company"  },
+     stock: [ { size: "S", qty: 5 }, { size: "M", qty: 5 } ],
+     category: "houseware"
+   }
+);
+
+
+bulk.execute();
+
+
+The method returns a BulkWriteResult object with the status of the operation. A successful insert of the documents returns the following object:
+
+
+bulk 模式 插入 数据 与 document 单条数据  多条 作为数组 插入
+
+
+
+
+
+
+
+MongoDB 固定集合（Capped Collections）
+
+几个 不支持的操作 需要注意
+
+You cannot shard a capped collection. 不支持数据分片
+
+聚合数据管道 不能将结果写入固定集合
+
+The aggregation pipeline operator $out cannot write results to a capped collection.
+
+
+MongoDB Views 几个视图不支持点
+
+
+首先几个视图 在其他类型数据库也不支持的操作
+
+You cannot rename views. 重新命名视图
+
+Views are read-only; write operations on views will error. 由于表联合视图 sqlserver mysql 都不支持
+
+
+
+
+
+
+
+
+
+
+
+MongoDB 实现 视图分片
+
+Views are considered sharded if their underlying collection is sharded. As such, you cannot specify a sharded view for the from field in $lookup and $graphLookup operations.
+
+未完待续
+map-reduce is less efficient and more complex than the aggregation pipeline.
+
+
+
+
+
+
+
+
+
+
