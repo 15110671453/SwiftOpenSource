@@ -1,0 +1,61 @@
+swift-cocopods
+
+新建xcode 工程
+
+关闭xcode
+
+
+进入 命令行  cd 到 工程目录下  使用命令
+
+接下来，输入下面的命令：
+
+pod init
+这将为你的项目创建一个PodFile
+
+输入下面的命令行打开PodFile，并使用Xcode进行编辑：
+
+open -a Xcode Podfile
+
+
+【 注意 】这里 不能使用一般的工具编写 该文件  需要使用 Xcode 编写
+默认的podFile看起来是这样的：
+
+# Uncomment this line to define a global platform for your project# 
+
+platform :ios, '6.0' 
+target 'IceCreamShop' do 
+end 
+target 'IceCreamShopTests' do 
+end
+将注释的内容替换成下面的两行：
+
+platform :ios, "8.0"use_frameworks!
+
+
+标准模版
+
+
+target 'APPExamples' do
+  platform :ios, '9.0'
+  use_frameworks!
+  pod "ZCAnimatedLabel"
+  pod 'ChameleonFramework/Swift', :git => 'https://github.com/ViccAlexander/Chameleon.git'
+end
+
+target 'APPTvOSExamples' do
+  platform :tvos, '9.0'
+  use_frameworks!
+end
+
+这就告诉了CocoaPods--你的项目使用的是iOS 8.0，并且将使用框架来代替静态库。
+
+想要在Swift中使用CocoaPods，你必须明确的写出use_frameworks! 来选择使用框架。如果你忘了写这个，CocoaPods能检测到你使用使用Swift CocoaPods，你安装pods的时候就会报错。
+
+
+最后 执行
+
+pod install
+
+
+打开工程
+
