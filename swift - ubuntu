@@ -1,0 +1,139 @@
+swift - ubuntu
+
+sudo apt-get install clang libicu-dev
+
+
+dowload swift
+https://swift.org/download/#using-downloads
+
+install
+
+
+admindyn@ubuntu:~/Desktop$ 
+tar -xzf swift-4.0-DEVELOPMENT-SNAPSHOT-2017-12-04-a-ubuntu16.10.tar.gz 
+tar -xvf 都可以
+
+
+admindyn@ubuntu:~/Desktop$ '/home/admindyn/Desktop/swift-4.0-DEVELOPMENT-SNAPSHOT-2017-12-04-a-ubuntu16.10/usr/bin' 
+
+
+
+找到 bin 路径 将改路径 添加到环境变量去
+
+
+admindyn@ubuntu:~$ swift --version
+Swift version 4.0.3-dev (LLVM 2dedb62a0b, Clang ab7472e733, Swift 64ab6903b2)
+Target: x86_64-unknown-linux-gnu
+admindyn@ubuntu:~$ echo $PATH
+/home/admindyn/Desktop/swift-4.0-DEVELOPMENT-SNAPSHOT-2017-12-04-a-ubuntu16.10/usr/bin:/home/admindyn/Desktop/swift-4.0-DEVELOPMENT-SNAPSHOT-2017-12-04-a-ubuntu16.10/usr/bin/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+admindyn@ubuntu:~$ source ~/.bashrc
+admindyn@ubuntu:~$ 
+
+
+安装sublime-text
+
+使用https://www.sublimetext.com/3 下载 然后copy到 ubuntu下 解压 就可以使用
+
+
+如何将sublime-text 添加到系统应用中(可以锁定在 Launcher 中并且单击便能够启动的程序)
+
+所有系统可以方便调用的快捷方式 都有一个文件 写在/usr/share/applications/ 目录下
+
+admindyn@ubuntu:~/Desktop/sublime_text_3$ cp sublime_text.desktop /usr/share/applications
+cp: cannot create regular file '/usr/share/applications/sublime_text.desktop': Permission denied
+admindyn@ubuntu:~/Desktop/sublime_text_3$ sudo cp sublime_text.desktop /usr/share/applications
+[sudo] password for admindyn: 
+admindyn@ubuntu:~/Desktop/sublime_text_3$ 
+
+还是有点问题
+
+先实现快捷命令行启动吧
+
+admindyn@ubuntu:~/Desktop/sublime_text_3$ sudo ln -s sublime_text /usr/bin/sublime_text
+[sudo] password for admindyn: 
+
+以上有错误 必须绝对路径
+
+admindyn@ubuntu:/usr/bin$ sudo ln -s /home/admindyn/Desktop/sublime_text_3/sublime_text /usr/bin/sublime_text
+admindyn@ubuntu:/usr/bin$ 
+
+
+安装package control
+
+https://packagecontrol.io/installation
+
+
+安装 c 开发环境 插件
+
+安装 swift 开发环境插件
+
+默认 sublime view syntax 语法 不支持 swift
+
+
+先通过package control 安装 swift 语法 (除了语法高亮之外， 这个插件还会提供一定的自动完成能力)
+
+然后 sublime新建 swift 后缀文件 编辑代码 试一试
+
+现在 只是支持 swift 语法关键字的 高亮
+
+自动补全 与 代码导航 还不支持 需要其他插件
+
+ubuntu https://help.ubuntu.com/lts/serverguide/index.html
+我们先配置swift 编译配置 方便我们测试
+
+在 sublime 的 tools 的 build sysytem 下 添加 我们自定义的swift 构建环境
+文件名  我们使用的是 swift.sublime-build
+{
+"cmd": ["swift", "${file}"],
+"file_regex": "^(...?):([0-9]):?([0-9]*)",
+"path": "/home/admindyn/Desktop/swift-4.0-DEVELOPMENT-SNAPSHOT-2017-12-04-a-ubuntu16.10/usr/bin/swift-build",
+"selector": "source.swift"
+}
+
+该文件 在 ubuntu  存储路径
+admindyn@ubuntu:~$ cd .config/sublime-text-3/Packages/User/
+admindyn@ubuntu:~/.config/sublime-text-3/Packages/User$ ls -la
+total 256
+drwx------ 3 admindyn admindyn   4096 Apr 26 01:55 .
+drwx------ 3 admindyn admindyn   4096 Apr 26 00:12 ..
+drwxr-xr-x 2 admindyn admindyn   4096 Apr 26 01:14 Package Control.cache
+-rw-r--r-- 1 admindyn admindyn     10 Apr 26 01:55 Package Control.last-run
+-rw-r--r-- 1 admindyn admindyn 233394 Apr 26 01:14 Package Control.merged-ca-bundle
+-rw-r--r-- 1 admindyn admindyn    118 Apr 26 01:55 Package Control.sublime-settings
+-rw-r--r-- 1 admindyn admindyn      0 Apr 26 01:14 Package Control.user-ca-bundle
+-rw-r--r-- 1 admindyn admindyn     43 Apr 26 01:20 Preferences.sublime-settings
+-rw-r--r-- 1 admindyn admindyn    213 Apr 26 01:48 swift.sublime-build
+admindyn@ubuntu:~/.config/sublime-text-3/Packages/User$ 
+
+
+
+ubuntu 虚拟机 mac 中 发现 右键 不管用
+
+鼠标右键不管用时，用ctrl+alt+t调出终端。
+ 
+不管用的解决办法：
+gnome-tweak-tool 工具。
+ 
+如果未安装。apt install gnome-tweak-tool安装此工具。
+而后在终端内gnome-tweak-tool 
+在启动的界面内选择desktop，将“Icons on Desktop”，把它开启，就可以在Gnome桌面就可以使用鼠标右键了。
+
+
+还是  试一试 clion 支持 swift的 情况
+
+export SWIFT_HOME=/home/admindyn/Desktop/swift-4.0-DEVELOPMENT-SNAPSHOT-2017-12-04-a-ubuntu16.10
+export CLION_HOME=/home/admindyn/Documents/clion-2018.1.2/bin
+export PATH=${CLION_HOME}:${SWIFT_HOME}/usr/bin:$PATH
+
+注册码
+http://idea.lanyus.com
+
+
+
+
+
+
+
+
+
+
